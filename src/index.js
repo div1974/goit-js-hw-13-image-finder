@@ -4,8 +4,8 @@ import fetchImages from './fetchimg.js';
 import { error } from '@pnotify/core';
 import '@pnotify/core/dist/BrightTheme.css';
 import '@pnotify/core/dist/PNotify.css';
-// const basicLightbox = require('basiclightbox');
 import * as basicLightbox from 'basiclightbox';
+import '../node_modules/basiclightbox/dist/basicLightbox.min.css';
 
 document.querySelector('.intro').insertAdjacentHTML(
   'afterbegin',
@@ -28,10 +28,7 @@ const LoadMoreBtn = document.querySelector('button[data-action="Load-more"]');
 LoadMoreBtn.addEventListener('click', LoadMoreBtnAction);
 
 function searchData(e) {
-  // console.log(input.value);
-
   if (input.value !== '') {
-    // console.log('ура'+input.value);
     searchResult.innerHTML = '';
     fetchImages.resetPage();
     fetchImages.searchQuery = input.value;
@@ -46,33 +43,20 @@ function onGetData(data) {
 
 function LoadMoreBtnAction() {
   if (input.value !== '') {
-    // console.log('ура2'+input.value);
-    // fetchImages.fetchImages = input.value;
     fetchImages.fetchImg(onGetData);
   }
-  // const top = document.querySelector('.gallery').getBoundingClientRect().top;
-  //       console.log(top);
-  //       window.scrollTo({
-  //         top, // скрол так чтобы элемент оказался в верху страницы
-  //         behavior: 'smooth', // чтобы было плавным
-  //       });
 }
 
 function printCountriesList(imgArray) {
-  // document.querySelector('searchRes').innerHTML='';
-  // console.log(imgArray);
   const Handlebars = require('handlebars');
   const template = Handlebars.compile(`
 
 
-  
-  
-  
   {{#each this.hits}}
     <li class="gallery__item" >
     
     <div class="photo-card">
-  <img src="{{previewURL}}" alt="" style='width:100px; height:90px'/>
+  <img src="{{previewURL}}" alt="" style='width:110px; height:90px'/>
 
   <div class="stats">
     <p class="stats-item" style='display:flex'>
@@ -97,80 +81,41 @@ function printCountriesList(imgArray) {
   `);
 
   const images = template(imgArray);
-  // console.log(countries)
 
   searchResult.insertAdjacentHTML('beforeend', images);
 
-  // const onEntry = (entries, observer) => {
-  // entries.forEach(entry => {
-  // if (entry.isIntersecting) {
-  // console.log(entry.target);
-  // const top = entry.target.getBoundingClientRect().top;
   const domChildrenLength = document.querySelector('.gallery').children.length;
   const top = document
     .querySelector('.gallery')
     .children[domChildrenLength - fetchImages.per_page].getBoundingClientRect()
     .top;
-  // const elem = document.querySelector('.gallery').children[domChildrenLength-fetchImages.per_page].scrollIntoView()// const top1 =top.getBoundingClientRect().top;
-  // console.log(document.querySelector('.gallery').children[2]);
-  // console.log(
-  //   document.querySelector('.gallery').children[
-  //     domChildrenLength - fetchImages.per_page
-  //   ],
-  // );
-  // console.log(top);
-  // console.log(top1);
-  // console.log(document.querySelector('.gallery'))
+
   setTimeout(() => {
     scrollTo({
-      top: top + window.pageYOffset, // скрол так чтобы элемент оказался в верху страницы
+      top: top + window.pageYOffset,
       behavior: 'smooth',
     });
-  }, 2000);
+  }, 1500);
 
-  // }
-  // observer.disconnect();
-  // });
-  // };
-
-  // const observer = new IntersectionObserver(onEntry, {});
-  // const imgItems = document.querySelectorAll('.photo-card');
-
-  // imgItems.forEach(imgItem => {
-  // observer.observe(imgItem);
-  // });
-  const imgItems = document.querySelectorAll('.photo-card');
-  // console.log(imgItems);
+  const imgItems = document.querySelectorAll('.photo-card >img');
 
   imgItems.forEach(function (entry) {
-    // console.log(imgArray.hits);
-    // console.log(imgArray);
     entry.addEventListener('click', function (event) {
       event.preventDefault();
-      // console.log(event.target.src);
+
       const bigImg = imgArray.hits.filter(e => {
         return e.previewURL === event.target.src;
       });
-      // console.log(bigImg[0].largeImageURL);
+
       const instance = basicLightbox.create(`
-    <div class="modal">
+    
     <img src=${bigImg[0].largeImageURL} width="800" height="600">
-    </div>
+    
 `);
 
       instance.show();
     });
   });
-  //   imgItems.addEventListener('click', modalPct(e));
-  //   function modalPct(e) {
-  //     e.preventDefault();
-  //     const instance = basicLightbox.create(`
-  //     <img src=${this.hits.largeImageURL} width="800" height="600">
-  // `);
-
-  //     instance.show();
-
-  //   }
 }
 
 function printError(obj) {
