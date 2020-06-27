@@ -7,7 +7,7 @@ const mainAddr = 'https://cors-anywhere.herokuapp.com/https://pixabay.com/api/'
 export default {
     page: 1,
     query:'',
-    per_page:4,
+    per_page:3,
     fetchImg(callback){
     
         
@@ -49,8 +49,8 @@ export default {
     get searchQuery(){
         return this.query;
     },
-    set searchQuery(string){
-        this.query=string;
+    set searchQuery(str){
+        this.query = str;
     },
 
     resetPage(){
