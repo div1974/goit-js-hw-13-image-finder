@@ -56,7 +56,7 @@ function printCountriesList(imgArray) {
     <li class="gallery__item" >
     
     <div class="photo-card">
-  <img src="{{previewURL}}" alt="" style='width:110px; height:90px'/>
+  <img src="{{previewURL}}" alt="" style='width:100px; height:90px'/>
 
   <div class="stats">
     <p class="stats-item" style='display:flex'>
